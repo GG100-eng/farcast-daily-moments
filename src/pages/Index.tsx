@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import PromptStatus from '@/components/PromptStatus';
 import { api } from '@/services/api';
 import { Photo, PromptStatus as PromptStatusType } from '@/types';
 import { useMiniKit } from '@/context/MiniKitContext';
-import { Link } from 'react-router-dom';
 
 const Index = () => {
   const { toast } = useToast();
@@ -25,6 +25,7 @@ const Index = () => {
   const [allPosts, setAllPosts] = useState<Photo[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   
+  // Fetch prompt status
   useEffect(() => {
     const fetchPromptStatus = async () => {
       try {
@@ -44,11 +45,13 @@ const Index = () => {
     
     fetchPromptStatus();
     
+    // Poll for updates every 10 seconds
     const intervalId = setInterval(fetchPromptStatus, 10000);
     
     return () => clearInterval(intervalId);
   }, [toast]);
   
+  // Fetch posts
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoadingPosts(true);
@@ -75,9 +78,11 @@ const Index = () => {
     fetchPosts();
   }, [toast]);
   
+  // Handle subscription to notifications
   const handleSubscribe = async () => {
     setIsSubscribing(true);
     try {
+      // In a real app, this would register with MiniKit's notification system
       await api.subscribeToNotifications();
       const result = await addFrame();
       
@@ -99,6 +104,7 @@ const Index = () => {
     }
   };
   
+  // Toggle prompt (for hackathon demo only)
   const handleTogglePrompt = async () => {
     try {
       const status = await api.togglePrompt();
@@ -120,11 +126,13 @@ const Index = () => {
     }
   };
   
+  // Handle photo capture and submission
   const handlePhotoCapture = async (mainImage: string, selfieImage: string) => {
     setIsSubmitting(true);
     try {
       const photo = await api.submitPhoto(mainImage, selfieImage);
       
+      // Add the new photo to both lists
       setFriendsPosts([photo, ...friendsPosts]);
       setAllPosts([photo, ...allPosts]);
       
@@ -153,11 +161,6 @@ const Index = () => {
           FarReal
         </h1>
         <p className="text-muted-foreground">Share your daily moments on Farcaster</p>
-        <div className="mt-2">
-          <Link to="/frame" className="text-sm text-blue-500 hover:underline">
-            View as Farcaster Frame
-          </Link>
-        </div>
       </header>
       
       <PromptStatus 
