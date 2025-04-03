@@ -25,6 +25,12 @@ const Index = () => {
   const [allPosts, setAllPosts] = useState<Photo[]>([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   
+  // Farcaster Frame meta tags
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const frameImage = promptStatus?.isActive 
+    ? `${baseUrl}/active-prompt.png` 
+    : `${baseUrl}/inactive-prompt.png`;
+  
   // Fetch prompt status
   useEffect(() => {
     const fetchPromptStatus = async () => {
@@ -156,6 +162,18 @@ const Index = () => {
   
   return (
     <div className="container max-w-md mx-auto p-4">
+      {/* Farcaster Frame meta tags */}
+      <head>
+        <meta property="fc:frame" content="vNext" />
+        <meta property="fc:frame:image" content={frameImage} />
+        <meta property="fc:frame:button:1" content="Take FarReal" />
+        <meta property="fc:frame:button:1:action" content="post_redirect" />
+        <meta property="fc:frame:button:1:target" content={`${baseUrl}/camera`} />
+        <meta property="fc:frame:button:2" content="View Timeline" />
+        <meta property="fc:frame:button:2:action" content="post_redirect" />
+        <meta property="fc:frame:button:2:target" content={`${baseUrl}/timeline`} />
+      </head>
+
       <header className="text-center mb-6">
         <h1 className="text-3xl font-bold farreal-gradient bg-clip-text text-transparent">
           FarReal
