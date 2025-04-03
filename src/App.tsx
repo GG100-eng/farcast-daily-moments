@@ -26,7 +26,7 @@ const App = () => (
                 // Instead of rendering our React component, redirect to the static HTML file
                 process.env.NODE_ENV === 'development' 
                   ? <FrameView /> 
-                  : <Navigate to="/frame.html" replace />
+                  : <Navigate to="/static-frame.html" replace />
               } />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
