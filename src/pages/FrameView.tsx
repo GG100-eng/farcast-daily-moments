@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '@/services/api';
 import { Button } from "@/components/ui/button";
 import { PromptStatus as PromptStatusType } from '@/types';
+import { Helmet } from 'react-helmet-async';
 
 const FrameView = () => {
   const [promptStatus, setPromptStatus] = useState<PromptStatusType | null>(null);
@@ -33,8 +34,7 @@ const FrameView = () => {
 
   return (
     <>
-      {/* Farcaster Frame meta tags */}
-      <head>
+      <Helmet>
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content={frameImage} />
         <meta property="fc:frame:button:1" content="Capture Moment" />
@@ -43,7 +43,7 @@ const FrameView = () => {
         <meta property="fc:frame:button:2" content="View Timeline" />
         <meta property="fc:frame:button:2:action" content="post_redirect" />
         <meta property="fc:frame:button:2:target" content={`${baseUrl}/`} />
-      </head>
+      </Helmet>
 
       <div className="flex flex-col items-center justify-center p-4 max-w-md mx-auto">
         <h1 className="text-3xl font-bold farreal-gradient bg-clip-text text-transparent mb-2">
